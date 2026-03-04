@@ -98,3 +98,27 @@ npx react-native run-android
 3. Get Your API Key
 4. Create a .env file in the frontend directory
 5. Add the following line: API_NINJAS_KEY=your_api_ninjas_key
+
+
+### App Screenshots
+<div>
+  
+<img height="500" alt="Login_Screen_1" src="https://i.ibb.co/DPvxhm7N/Login-Screen-1.jpg">
+<img height="500" alt="Login_Screen_2" src="https://i.ibb.co/Fq7VXJxm/Login-Screen-2.jpg">
+<img height="500" alt="Register_Screen" src="https://i.ibb.co/WvjcDjG0/Register-Screen.jpg">
+<img height="500" alt="HomeScreen_1" src="https://github.com/user-attachments/assets/2127d04d-d09d-4eb9-a0a7-0a40b53d2bdc"/>
+<img height="500" alt="Home_Screen_2" src="https://i.ibb.co/Mx9fPTbr/Home-Screen-2.jpg">
+<img height="500" alt="Loading_Screen" src="https://i.ibb.co/TxYBcmsX/Loading-Screen.jpg">
+<img height="500" alt="WorkOutList_Screen" src="https://i.ibb.co/gMGpGtFJ/Workout-List-Screen.jpg">
+<img height="500" alt="WorkOutDetail_Screen" src="https://i.ibb.co/C3bnK2pW/Workout-Detail-Screen.jpg">
+<img height="500" alt="Profile_Screen_1" src="https://i.ibb.co/Ps896Dx4/Profile-Screen-1.jpg">
+<img height="500" alt="Profile_Screen_2" src="https://i.ibb.co/35JC1wP6/Profile-Screen-2.jpg">
+<img height="500" alt="Edit_Profile_Screen" src="https://i.ibb.co/pvLrV2xs/Edit-Profile-Screen.jpg">
+
+</div>
+
+
+
+
+
+

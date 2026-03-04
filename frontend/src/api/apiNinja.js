@@ -6,7 +6,7 @@ const getExercisesByMuscle = async muscle => {
     `https://api.api-ninjas.com/v1/exercises?muscle=${muscle}`,
     {
       headers: {
-        'X-Api-Key': API_NINJAS_KEY || "bKhN7K2DgitsUWuWTxIvdBl3ILuAOvAQRkvQLLGU",
+        'X-Api-Key': API_NINJAS_KEY,
       },
     },
   );

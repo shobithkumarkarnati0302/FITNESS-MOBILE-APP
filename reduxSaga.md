@@ -47,14 +47,15 @@ function* loginWorker(action) {
 ## 📁 Directory Structure
 
 ```
-📁src
-├──📁store        (Redux Config)
-    ├── 📁 sagas   (Logic)
-    │   └── 📄 authSaga.ts
-    ├── 📁 slices  (State Definitions)
-    │   └── 📄 authSlice.ts
-    ├── 📄 RootSaga.tsx
-    └── 📄 Store.tsx
+📁frontend
+├──📁src
+    ├──📁store        (Redux Config)
+        ├── 📁 sagas   (Logic)
+        │   └── 📄 authSaga.ts
+        ├── 📁 slices  (State Definitions)
+        │   └── 📄 authSlice.ts
+        ├── 📄 RootSaga.tsx
+        └── 📄 Store.tsx
 ```
 
 ### Directory Breakdown

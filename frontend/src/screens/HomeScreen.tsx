@@ -1,9 +1,18 @@
-import { StyleSheet, Text, View, FlatList, TextInput } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  FlatList,
+  TextInput,
+  TouchableOpacity,
+} from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useAuth } from '../context/AuthContext';
+import { useSelector } from 'react-redux';
+import { RootState } from '../store/Store';
 import muscles_groups from '../constants/muscles';
 import MuscleCard from '../components/MuscleCard';
+import { X, Search } from 'lucide-react-native';
 
 const getGreeting = () => {
   const hour = new Date().getHours();
@@ -13,7 +22,7 @@ const getGreeting = () => {
 };
 
 const HomeScreen = ({ navigation }: any) => {
-  const { user } = useAuth();
+  const user = useSelector((state: RootState) => state.auth.user);
   const firstName = user?.name?.split(' ')[0] ?? 'Athlete';
 
   const [search, setSearch] = useState('');
@@ -23,10 +32,11 @@ const HomeScreen = ({ navigation }: any) => {
     setFilteredData(muscles_groups);
   }, []);
 
-  const HandleSearch = (e) => {
-    setSearch(e);
+  const HandleSearch = e => {
+    const response = e.toLowerCase();
+    setSearch(response);
     const result = muscles_groups.filter(item =>
-      item.name.toLowerCase().includes(e.toLowerCase()),
+      item.name.toLowerCase().includes(response.replace(/\s+/g, '').trim()),
     );
     setFilteredData(result);
   };
@@ -57,11 +67,11 @@ const HomeScreen = ({ navigation }: any) => {
 
             {/* Stats pills */}
             <View style={styles.statsRow}>
-              <View style={styles.stat}>
+              <TouchableOpacity style={styles.stat}>
                 <Text style={styles.statNum}>{muscles_groups.length}</Text>
                 <Text style={styles.statLabel}>Groups</Text>
-              </View>
-              <View style={[styles.stat, styles.statAccent]}>
+              </TouchableOpacity>
+              <TouchableOpacity style={[styles.stat, styles.statAccent]}>
                 <Text style={[styles.statNum, { color: '#fff' }]}>100+</Text>
                 <Text
                   style={[
@@ -71,19 +81,32 @@ const HomeScreen = ({ navigation }: any) => {
                 >
                   Exercises
                 </Text>
-              </View>
+              </TouchableOpacity>
             </View>
 
             {/* Search bar */}
             <View style={styles.searchBox}>
-              <Text style={styles.searchEmoji}>🔍</Text>
+              <Text style={styles.searchEmoji}>
+                <Search />
+              </Text>
               <TextInput
-                placeholder          = "Search muscle group..."
-                placeholderTextColor = "rgba(0,0,0,0.35)"
-                style                = {styles.searchInput}
-                value                = {search}
-                onChangeText         = {HandleSearch}
+                placeholder="Search muscle group..."
+                placeholderTextColor="rgba(0,0,0,0.35)"
+                style={styles.searchInput}
+                value={search}
+                onChangeText={HandleSearch}
               />
+              {search.length > 0 && (
+                <TouchableOpacity
+                  style={styles.searchEmoji}
+                  onPress={() => {
+                    setSearch('');
+                    setFilteredData(muscles_groups);
+                  }}
+                >
+                  <X />
+                </TouchableOpacity>
+              )}
             </View>
           </>
         }
@@ -142,6 +165,7 @@ const styles = StyleSheet.create({
     fontSize: 30,
     fontWeight: '800',
     letterSpacing: 0.3,
+    textTransform: 'capitalize',
   },
   avatarCircle: {
     width: 48,

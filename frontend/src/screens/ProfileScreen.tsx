@@ -1,12 +1,21 @@
-import { StyleSheet, Text, View, TouchableOpacity, ScrollView,} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  ScrollView,
+} from 'react-native';
 import React from 'react';
-import { useAuth } from '../context/AuthContext';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../store/Store';
+import { logoutRequest } from '../store/slices/authSlice';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Weight, Calendar, Ruler } from 'lucide-react-native';
 import SubscriptionBar from '../components/SubscriptionBar';
 
 const ProfileScreen = ({ navigation }: any) => {
-  const { logout, user } = useAuth();
+  const user = useSelector((state: RootState) => state.auth.user);
+  const dispatch = useDispatch();
 
   const initials = user?.name
     ? user.name
@@ -17,9 +26,20 @@ const ProfileScreen = ({ navigation }: any) => {
         .slice(0, 2)
     : '?';
 
+  const User_Gender = user?.gender
+    ? user.gender.charAt(0).toUpperCase() + user.gender.slice(1)
+    : '—';
+
+  const handleLogout = () => {
+    dispatch(logoutRequest());
+  };
+
   return (
     <SafeAreaView style={styles.safe}>
-      <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
+      <ScrollView
+        contentContainerStyle={styles.scroll}
+        showsVerticalScrollIndicator={false}
+      >
         {/* Top bar */}
         <View style={styles.topBar}>
           <Text style={styles.topBarTitle}>My Profile</Text>
@@ -41,9 +61,7 @@ const ProfileScreen = ({ navigation }: any) => {
           <Text style={styles.heroEmail}>{user?.email}</Text>
           {user?.gender ? (
             <View style={styles.genderBadge}>
-              <Text style={styles.genderBadgeText}>
-                {user.gender.charAt(0).toUpperCase() + user.gender.slice(1)}
-              </Text>
+              <Text style={styles.genderBadgeText}>{User_Gender}</Text>
             </View>
           ) : null}
         </View>
@@ -53,39 +71,39 @@ const ProfileScreen = ({ navigation }: any) => {
         <View style={styles.statsGrid}>
           {/* Height */}
           <View style={styles.statPill}>
-              <Ruler color="#9CA3AF" />
+            <Ruler color="#9CA3AF" />
             <Text style={styles.statVal}>
               {user?.height ?? '—'}
-              {user?.height ? <Text style={styles.statUnit}> cm</Text> : null}
+              {user?.height ? <Text style={styles.statUnit}> cm</Text> : ''}
             </Text>
             <Text style={styles.statLbl}>Height</Text>
           </View>
 
           {/* Weight */}
           <View style={styles.statPill}>
-              <Weight color="#9CA3AF" />
+            <Weight color="#9CA3AF" />
             <Text style={styles.statVal}>
               {user?.weight ?? '—'}
-              {user?.weight ? <Text style={styles.statUnit}> kg</Text> : null}
+              {user?.weight ? <Text style={styles.statUnit}> kg</Text> : ''}
             </Text>
             <Text style={styles.statLbl}>Weight</Text>
           </View>
 
           {/* Age */}
           <View style={styles.statPill}>
-              <Calendar color="#9CA3AF" />
+            <Calendar color="#9CA3AF" />
             <Text style={styles.statVal}>
               {user?.age ?? '—'}
-              {user?.age ? <Text style={styles.statUnit}> yrs</Text> : null}
+              {user?.age ? <Text style={styles.statUnit}> yrs</Text> : ''}
             </Text>
             <Text style={styles.statLbl}>Age</Text>
           </View>
         </View>
 
         {/* Subscription Bar */}
-        <Text style = {styles.sectionHeading}>Subscription</Text>
+        <Text style={styles.sectionHeading}>Subscription</Text>
         <View>
-          <SubscriptionBar/>
+          <SubscriptionBar plan={user?.plan} />
         </View>
 
         {/* Account Info */}
@@ -103,18 +121,31 @@ const ProfileScreen = ({ navigation }: any) => {
           <View style={styles.infoSep} />
           <View style={styles.infoRow}>
             <Text style={styles.infoLabel}>Gender</Text>
-            <Text style={[styles.infoValue, {textTransform: 'capitalize'}]}>{user?.gender ?? '—'}</Text>
+            <Text style={styles.infoValue}>{User_Gender}</Text>
           </View>
         </View>
 
         {/* Logout */}
         <TouchableOpacity
           style={styles.logoutBtn}
-          onPress={logout}
+          onPress={handleLogout}
           activeOpacity={0.8}
         >
           <Text style={styles.logoutText}>Log Out</Text>
         </TouchableOpacity>
+
+        {/* Extras */}
+        <View style={styles.extraContainer}>
+          <Text style={styles.extraHeading}>Extras</Text>
+          {/* Camera Screen */}
+          <TouchableOpacity
+            style={styles.extraBtn}
+            onPress={() => navigation.navigate('Camera')}
+            activeOpacity={0.8}
+          >
+            <Text style={styles.extraText}>Go To Camera Page</Text>
+          </TouchableOpacity>
+        </View>
       </ScrollView>
     </SafeAreaView>
   );
@@ -201,7 +232,6 @@ const styles = StyleSheet.create({
     letterSpacing: 0.5,
   },
 
-  /* section heading */
   sectionHeading: {
     fontSize: 11,
     fontWeight: '800',
@@ -212,7 +242,6 @@ const styles = StyleSheet.create({
     marginLeft: 4,
   },
 
-  /* stats grid */
   statsGrid: {
     flexDirection: 'row',
     gap: 10,
@@ -234,7 +263,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 3 },
     elevation: 2,
   },
-  statVal: { color: '#111827ff', fontSize: 18, fontWeight: '800' },
+  statVal: { color: '#111827', fontSize: 18, fontWeight: '800' },
   statUnit: { color: '#9CA3AF', fontSize: 11, fontWeight: '400' },
   statLbl: {
     color: '#9CA3AF',
@@ -244,7 +273,6 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
   },
 
-  /* info card */
   infoCard: {
     backgroundColor: '#fff',
     borderRadius: 20,
@@ -274,17 +302,44 @@ const styles = StyleSheet.create({
   },
   infoValue: { color: '#111827', fontSize: 14, fontWeight: '600' },
 
-  /* logout */
   logoutBtn: {
-    backgroundColor: '#fef2f2ff',
+    backgroundColor: '#FEF2F2',
     borderWidth: 2,
-    borderColor: '#f55a5aff',
+    borderColor: '#F87171',
     borderRadius: 16,
     paddingVertical: 16,
     alignItems: 'center',
   },
   logoutText: {
     color: '#DC2626',
+    fontSize: 14,
+    fontWeight: '800',
+    letterSpacing: 1,
+  },
+
+  extraContainer: {
+    marginTop: 20,
+  },
+  extraHeading: {
+    fontSize: 11,
+    fontWeight: '800',
+    color: '#9CA3AF',
+    textTransform: 'uppercase',
+    letterSpacing: 2,
+    marginBottom: 10,
+    marginLeft: 4,
+  },
+
+  extraBtn: {
+    backgroundColor: '#FFF7ED',
+    borderWidth: 2,
+    borderColor: '#F97316',
+    borderRadius: 16,
+    paddingVertical: 16,
+    alignItems: 'center',
+  },
+  extraText: {
+    color: '#F97316',
     fontSize: 14,
     fontWeight: '800',
     letterSpacing: 1,

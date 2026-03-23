@@ -1,4 +1,10 @@
-import { View,Text,FlatList,StyleSheet,TouchableOpacity,} from 'react-native';
+import {
+  View,
+  Text,
+  FlatList,
+  StyleSheet,
+  TouchableOpacity,
+} from 'react-native';
 import React, { useState, useEffect } from 'react';
 import Loading from '../components/Loading';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -6,7 +12,6 @@ import getExercisesByMuscle from '../api/apiNinja';
 import Error from '../components/Error';
 import WorkoutListCard from '../components/WorkoutListCard';
 import { ChevronLeft } from 'lucide-react-native';
-
 
 const WorkoutListScreen = ({ route, navigation }: any) => {
   const muscleGroup = route?.params?.muscleGroup || 'abdominals';
@@ -18,7 +23,7 @@ const WorkoutListScreen = ({ route, navigation }: any) => {
     try {
       const res = await getExercisesByMuscle(muscleGroup);
       setExercises(res);
-    } catch(error) {
+    } catch (error) {
       setError(error);
     } finally {
       setLoading(false);
@@ -29,34 +34,53 @@ const WorkoutListScreen = ({ route, navigation }: any) => {
     fetchExercises();
   }, []);
 
-  if (loading) return <Loading message="Loading exercises..."/>;
-  if (error) return <Error message={error} navigation={navigation}/>;
+  if (loading) return <Loading message="Loading exercises..." />;
+  if (error) return <Error message={error} navigation={navigation} />;
 
   return (
     <SafeAreaView style={styles.safe}>
+      <View style={styles.header}>
+        {/* Back button */}
+        <TouchableOpacity
+          style={styles.backBtn}
+          onPress={() => navigation.goBack()}
+        >
+          <ChevronLeft size={20} color="#111827" strokeWidth={2.5} />
+        </TouchableOpacity>
+
+        <View style={styles.headerText}>
+          <Text style={styles.headerSub}>Exercises for</Text>
+          <Text style={styles.headerTitle}>{muscleGroup}</Text>
+        </View>
+
+        {/* Count badge */}
+        <View style={styles.countBadge}>
+          <Text style={styles.countText}>{exercises.length}</Text>
+        </View>
+      </View>
       <FlatList
         data={exercises}
         contentContainerStyle={styles.list}
-        ListHeaderComponent={
-          <View style={styles.header}>
-            {/* Back button */}
-            <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
-              <ChevronLeft size={20} color="#111827" strokeWidth={2.5} />
-            </TouchableOpacity>
+        // ListHeaderComponent={
+        //   <View style={styles.header}>
+        //     {/* Back button */}
+        //     <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
+        //       <ChevronLeft size={20} color="#111827" strokeWidth={2.5} />
+        //     </TouchableOpacity>
 
-            <View style={styles.headerText}>
-              <Text style={styles.headerSub}>Exercises for</Text>
-              <Text style={styles.headerTitle}>{muscleGroup}</Text>
-            </View>
+        //     <View style={styles.headerText}>
+        //       <Text style={styles.headerSub}>Exercises for</Text>
+        //       <Text style={styles.headerTitle}>{muscleGroup}</Text>
+        //     </View>
 
-            {/* Count badge */}
-            <View style={styles.countBadge}>
-              <Text style={styles.countText}>{exercises.length}</Text>
-            </View>
-          </View>
-        }
+        //     {/* Count badge */}
+        //     <View style={styles.countBadge}>
+        //       <Text style={styles.countText}>{exercises.length}</Text>
+        //     </View>
+        //   </View>
+        // }
         renderItem={({ item }) => (
-          <WorkoutListCard exercise = {item} navigation = {navigation}/>
+          <WorkoutListCard exercise={item} navigation={navigation} />
         )}
         keyExtractor={(_, index) => index.toString()}
       />
@@ -72,7 +96,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#F9FAFB',
   },
   list: {
-      // paddingBottom: 10,
+    // paddingBottom: 10,
     paddingTop: 5,
   },
   header: {
@@ -83,6 +107,7 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
     gap: 12,
   },
+
   backBtn: {
     backgroundColor: '#FFFFFF',
     borderRadius: 12,
@@ -109,9 +134,9 @@ const styles = StyleSheet.create({
     letterSpacing: 0.5,
   },
   headerTitle: {
-    fontSize     : 22,
-    fontWeight   : '800',
-    color        : '#111827',
+    fontSize: 22,
+    fontWeight: '800',
+    color: '#111827',
     letterSpacing: 0.1,
     textTransform: 'capitalize',
   },

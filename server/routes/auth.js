@@ -15,7 +15,6 @@ router.post("/register", async (req, res) => {
     }
     const { name, email, password, height, weight, age, gender } = req.body;
 
-    // Check if user already exists
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ message: "User already exists" });
@@ -48,6 +47,7 @@ router.post("/register", async (req, res) => {
         weight,
         age,
         gender,
+        plan
       },
     });
   } catch (error) {
@@ -94,6 +94,7 @@ router.post("/login", async (req, res) => {
         weight: existingUser.weight,
         age: existingUser.age,
         gender: existingUser.gender,
+        plan: existingUser.plan,
         subscriptionStartDate: existingUser.subscriptionStartDate,
       },
     });

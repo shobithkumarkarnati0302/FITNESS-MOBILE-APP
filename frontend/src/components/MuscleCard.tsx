@@ -9,8 +9,10 @@ const MuscleCard = ({ muscle, navigation }: any) => {
 
   return (
     <>
-      {muscle.id % 2 == 1 ? (
-        <TouchableOpacity style={styles.card}activeOpacity={0.85}>
+      {muscle.id % 2 === 1 ? (
+        <TouchableOpacity style={styles.card}activeOpacity={0.85}
+        onPress={() => navigation.navigate('WorkoutList', { muscleGroup: muscle.name, muscle })}
+        >
           {/* Muscle image */}
           <Image source={muscle.image} style={styles.image} />
 
@@ -33,7 +35,9 @@ const MuscleCard = ({ muscle, navigation }: any) => {
           </View>
         </TouchableOpacity>
       ) : (
-        <TouchableOpacity style={styles.card} activeOpacity={0.85}>
+        <TouchableOpacity style={styles.card} activeOpacity={0.85}
+        onPress={() => navigation.navigate('WorkoutList', { muscleGroup: muscle.name })}
+        >
           {/* Right side */}
           <View style={styles.content}>
             <View style={styles.contentHeader}>

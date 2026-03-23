@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, ActivityIndicator,Image } from 'react-native';
+import { StyleSheet, Text,Image } from 'react-native';
 import React from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 

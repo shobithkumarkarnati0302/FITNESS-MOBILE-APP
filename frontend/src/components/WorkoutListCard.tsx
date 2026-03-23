@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import { ChevronRight } from 'lucide-react-native';
 
 const DIFFICULTY_COLORS = {
@@ -25,8 +25,15 @@ const WorkoutListCard = ({ exercise, navigation }) => {
     text: '#6B7280',
   };
 
+  const mockquipments = ['dumbell', 'barbell', 'bench', 'kettlebell', 'cable', 'machine', 'bands']; 
+  
+  const finalequip = mockquipments.concat(exercise.equipments);
+
   return (
-    <TouchableOpacity activeOpacity={0.85} style={styles.card}>
+
+    <TouchableOpacity activeOpacity={0.85} style={styles.card}
+    onPress={() => navigation.navigate('WorkoutDetail', { exercise })}
+    >
       <View style={[styles.accent, { backgroundColor: difficultyColor }]} />
 
       {/* Left Column */}
@@ -45,16 +52,21 @@ const WorkoutListCard = ({ exercise, navigation }) => {
 
         {/*  Equipments*/}
         <View style={styles.equipRow}>
-          {exercise.equipments.length > 0 && (
+          {exercise.equipments.length > 0 ? (
             <>
               <Text style={styles.equipTextHeading}>Equipments Required:</Text>
-              {exercise.equipments.map((eq, i) => (
+              {finalequip.map((eq, i) => (
                 <View key={i} style={styles.equipTag}>
                   <Text style={styles.equipText}>{eq}</Text>
                 </View>
               ))}
             </>
-          )}
+          ) : 
+          <>
+          <Text style={styles.equipTextHeading}>Equipments Required:</Text>
+            <Text> - - - - </Text>
+          </>
+          }
         </View>
       </View>
 
@@ -89,7 +101,6 @@ const styles = StyleSheet.create({
     shadowColor: '#000',
     shadowOpacity: 0.07,
     shadowRadius: 10,
-    shadowOffset: { width: 0, height: 4 },
     elevation: 4,
     overflow: 'hidden',
   },
@@ -138,15 +149,16 @@ const styles = StyleSheet.create({
     marginTop: 4,
   },
   equipTag: {
-    backgroundColor: '#F3F4F6',
+    backgroundColor: '#b8c3d7',
     paddingHorizontal: 9,
     paddingVertical: 4,
+    // marginVertical: 4,
     borderRadius: 7,
   },
   equipText: {
     fontSize: 10,
     fontWeight: '600',
-    color: '#374151',
+    color: '#000000',
     textTransform: 'capitalize',
   },
 

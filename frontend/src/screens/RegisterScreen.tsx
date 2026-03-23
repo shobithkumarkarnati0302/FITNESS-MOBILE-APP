@@ -12,12 +12,15 @@ import {
   Image,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useAuth } from '../context/AuthContext';
 import { Dropdown } from 'react-native-element-dropdown';
 import { Eye, EyeOff } from 'lucide-react-native';
+import { useDispatch, useSelector } from 'react-redux';
+import { registerRequest, authFailure } from '../store/slices/authSlice';
+import { RootState } from '../store/Store';
 
 const RegisterScreen = ({ navigation }: any) => {
-  const { register } = useAuth();
+  const { loading, error } = useSelector((state: RootState) => state.auth);
+  const dispatch = useDispatch();
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -26,47 +29,45 @@ const RegisterScreen = ({ navigation }: any) => {
   const [weight, setWeight] = useState('');
   const [age, setAge] = useState('');
   const [gender, setGender] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleRegister = async () => {
+  const handleRegister = () => {
     if (!name || !email || !password) {
-      setError('Name, email and password are required.');
+      dispatch(authFailure('Name, email and password are required.'));
       return;
     }
     if (!email.includes('@gmail.com')) {
-      setError('Please enter a valid email address.');
+      dispatch(authFailure('Please enter a valid email address.'));
       return;
     }
-    try {
-      setLoading(true);
-      setError('');
-      await register(
+    dispatch(
+      registerRequest({
         name,
-        email.trim().toLowerCase(),
+        email: email.trim().toLowerCase(),
         password,
         height,
         weight,
         age,
         gender,
-      );
-    } catch (err: any) {
-      setError(
-        err?.response?.data?.message || 'Registration failed. Try again.',
-      );
-    } finally {
-      setLoading(false);
-    }
+      }),
+    );
   };
 
   return (
     <SafeAreaView style={styles.root}>
-      <KeyboardAvoidingView style={{ flex: 1 }} behavior = {Platform.OS === 'ios' ? 'padding' : undefined}>
-        <ScrollView contentContainerStyle = {styles.container} keyboardShouldPersistTaps = "handled" showsVerticalScrollIndicator = {false}>
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      >
+        <ScrollView
+          contentContainerStyle={styles.container}
+          keyboardShouldPersistTaps="handled"
+          showsVerticalScrollIndicator={false}
+        >
           {/* Header */}
           <View style={styles.header}>
-            <Image source={require('../assets/images/Kettlebell_Exercise.gif')}
+            <Image
+              source={require('../assets/images/Kettlebell_Exercise.gif')}
               style={{ width: 100, height: 100 }}
             />
             <Text style={styles.title}>Create Account</Text>

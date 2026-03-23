@@ -17,7 +17,7 @@ router.get("/profile", authMiddleware, async (req, res) => {
 // PUT Update Profile
 router.put("/profile", authMiddleware, async (req, res) => {
   try {
-    const { name, height, weight, age, gender } = req.body;
+    const { name, height, weight, age, gender, plan } = req.body;
     const user = await User.findById(req.user.id).select("-password");
     if (!user) return res.status(404).json({ message: "User not found" });
     user.name         = name;
@@ -25,6 +25,7 @@ router.put("/profile", authMiddleware, async (req, res) => {
     user.weight       = weight;
     user.age          = age;
     user.gender       = gender;
+    user.plan         = plan;
     user.lastModified = Date.now();
     await user.save();
     res.status(200).json(user);

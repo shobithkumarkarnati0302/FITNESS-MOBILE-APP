@@ -1,55 +1,76 @@
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, ScrollView, ActivityIndicator, KeyboardAvoidingView, Platform, } from 'react-native';
-import React, { useState } from 'react';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  TouchableOpacity,
+  ScrollView,
+  ActivityIndicator,
+  KeyboardAvoidingView,
+  Platform,
+} from 'react-native';
+import React, { useState, useEffect } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useAuth } from '../context/AuthContext';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../store/Store';
+import { updateProfileRequest, authFailure } from '../store/slices/authSlice';
 import { ChevronLeft, Lock } from 'lucide-react-native';
 
 const GENDERS = ['male', 'female', 'other'];
+const PLANS = ['Free', 'Pro', 'Elite'];
 
 const EditProfileScreen = ({ navigation }: any) => {
-  const { user, updateProfile } = useAuth();
+  const { user, loading, error } = useSelector((state: RootState) => state.auth);
+  const dispatch = useDispatch();
 
   const [name, setName] = useState(user?.name ?? '');
   const [height, setHeight] = useState(user?.height?.toString() ?? '');
   const [weight, setWeight] = useState(user?.weight?.toString() ?? '');
   const [age, setAge] = useState(user?.age?.toString() ?? '');
   const [gender, setGender] = useState(user?.gender ?? '');
+  const [plan, setPlan] = useState(user?.plan ?? 'Free');
 
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  useEffect(() => {
+    if (user) {
+      setName(user.name ?? '');
+      setHeight(user.height?.toString() ?? '');
+      setWeight(user.weight?.toString() ?? '');
+      setAge(user.age?.toString() ?? '');
+      setGender(user.gender ?? '');
+      setPlan(user.plan ?? 'Free');
+    }
+  }, [user]);
 
-  const handleSave = async () => {
+  const handleSave = () => {
     if (!name.trim()) {
-      setError('Name cannot be empty.');
+      dispatch(authFailure('Name cannot be empty.'));
       return;
     }
-    try {
-      setError('');
-      setLoading(true);
-      await updateProfile(
-        name.trim(),
-        user?.email,
-        height ? Number(height) : undefined,
-        weight ? Number(weight) : undefined,
-        age ? Number(age) : undefined,
-        gender || undefined,
-      );
-      navigation.goBack();
-    } catch (err: any) {
-      setError(
-        err?.response?.data?.message ??
-          err?.message ??
-          'Update failed. Try again.',
-      );
-    } finally {
-      setLoading(false);
-    }
+    dispatch(
+      updateProfileRequest({
+        name: name.trim(),
+        email: user?.email,
+        height: height ? Number(height) : undefined,
+        weight: weight ? Number(weight) : undefined,
+        age: age ? Number(age) : undefined,
+        gender: gender || undefined,
+        plan: plan || undefined,
+      }),
+    );
+    navigation.goBack();
   };
 
   return (
     <SafeAreaView style={styles.safe}>
-      <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
-        <ScrollView contentContainerStyle={styles.scroll} keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false}>
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      >
+        <ScrollView
+          contentContainerStyle={styles.scroll}
+          keyboardShouldPersistTaps="handled"
+          showsVerticalScrollIndicator={false}
+        >
           {/* Header */}
           <View style={styles.header}>
             <TouchableOpacity
@@ -99,34 +120,36 @@ const EditProfileScreen = ({ navigation }: any) => {
 
           {/* Physical stats */}
           <View style={styles.card}>
-            {/* Height */}
-            <View style={[styles.fieldWrap, { flex: 1 }]}>
-              <Text style={styles.label}>
-                Height <Text style={styles.unit}>cm</Text>
-              </Text>
-              <TextInput
-                style={styles.input}
-                value={height}
-                onChangeText={setHeight}
-                placeholder="175"
-                placeholderTextColor="#9CA3AF"
-                keyboardType="numeric"
-              />
-            </View>
+            <View style={styles.row}>
+              {/* Height */}
+              <View style={[styles.fieldWrap, { flex: 1 }]}>
+                <Text style={styles.label}>
+                  Height <Text style={styles.unit}>cm</Text>
+                </Text>
+                <TextInput
+                  style={styles.input}
+                  value={height}
+                  onChangeText={setHeight}
+                  placeholder="175"
+                  placeholderTextColor="#9CA3AF"
+                  keyboardType="numeric"
+                />
+              </View>
 
-            {/* Weight */}
-            <View style={[styles.fieldWrap, { flex: 1 }]}>
-              <Text style={styles.label}>
-                Weight <Text style={styles.unit}>kg</Text>
-              </Text>
-              <TextInput
-                style={styles.input}
-                value={weight}
-                onChangeText={setWeight}
-                placeholder="70"
-                placeholderTextColor="#9CA3AF"
-                keyboardType="numeric"
-              />
+              {/* Weight */}
+              <View style={[styles.fieldWrap, { flex: 1 }]}>
+                <Text style={styles.label}>
+                  Weight <Text style={styles.unit}>kg</Text>
+                </Text>
+                <TextInput
+                  style={styles.input}
+                  value={weight}
+                  onChangeText={setWeight}
+                  placeholder="70"
+                  placeholderTextColor="#9CA3AF"
+                  keyboardType="numeric"
+                />
+              </View>
             </View>
 
             {/* Age */}
@@ -167,6 +190,36 @@ const EditProfileScreen = ({ navigation }: any) => {
                         ]}
                       >
                         {g.charAt(0).toUpperCase() + g.slice(1)}
+                      </Text>
+                    </TouchableOpacity>
+                  );
+                })}
+              </View>
+            </View>
+
+            {/* Plan */}
+            <View style={styles.fieldWrap}>
+              <Text style={styles.label}>Plan</Text>
+              <View style={styles.genderRow}>
+                {PLANS.map(p => {
+                  const active = plan === p;
+                  return (
+                    <TouchableOpacity
+                      key={p}
+                      style={[
+                        styles.genderBtn,
+                        active && styles.genderBtnActive,
+                      ]}
+                      onPress={() => setPlan(p)}
+                      activeOpacity={0.75}
+                    >
+                      <Text
+                        style={[
+                          styles.genderBtnText,
+                          active && styles.genderBtnTextActive,
+                        ]}
+                      >
+                        {p.charAt(0).toUpperCase() + p.slice(1)}
                       </Text>
                     </TouchableOpacity>
                   );
@@ -254,17 +307,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 
-  /* section heading */
-  sectionHeading: {
-    fontSize: 11,
-    fontWeight: '800',
-    color: '#9CA3AF',
-    textTransform: 'uppercase',
-    letterSpacing: 2,
-    marginBottom: 10,
-    marginLeft: 4,
-  },
-
   /* card */
   card: {
     backgroundColor: '#fff',
@@ -317,16 +359,17 @@ const styles = StyleSheet.create({
   },
   inputDisabledText: { color: '#6B7280', fontSize: 15 },
 
-  /* gender */
-  genderRow: { flexDirection: 'row', gap: 8 },
+  /* gender/plan items */
+  genderRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
   genderBtn: {
-    flex: 1,
+    minWidth: '28%',
     paddingVertical: 11,
     borderRadius: 12,
     borderWidth: 1.5,
     borderColor: '#E5E7EB',
     backgroundColor: '#F9FAFB',
     alignItems: 'center',
+    paddingHorizontal: 8,
   },
   genderBtnActive: {
     backgroundColor: '#FFF7ED',

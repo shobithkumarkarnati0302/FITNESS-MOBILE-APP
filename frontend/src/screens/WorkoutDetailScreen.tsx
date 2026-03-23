@@ -1,4 +1,4 @@
-import { StyleSheet,Text,View,ScrollView,TouchableOpacity, ImageBackground} from 'react-native';
+import { StyleSheet,Text,View,ScrollView,TouchableOpacity, Image} from 'react-native';
 import React from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ChevronLeft } from 'lucide-react-native';
@@ -41,21 +41,19 @@ const WorkoutDetailScreen = ({ route, navigation }) => {
 
   const difficultyColor = DIFFICULTY_COLORS(exercise.difficulty)
   const typeStyle       = TYPE_COLORS(exercise.type?.toLowerCase());
-  const img = muscles_groups[exercise.muscle]
+
+  // const muscles = muscles_groups[exercise.muscle];
+
+  
+  // console.log(exercise.muscle)
 
   return (
     <SafeAreaView style={styles.safe}>
       {/* <ImageBackground source={img.image} style={styles.image} resizeMode="cover"> */}
-      <ScrollView
-        contentContainerStyle={styles.scroll}
-        showsVerticalScrollIndicator={false}
-      >
+      <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
         {/* Header */}
         <View style={styles.header}>
-          <TouchableOpacity
-            style={styles.backBtn}
-            onPress={() => navigation.goBack()}
-          >
+          <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
             <ChevronLeft size={20} color="#111827" strokeWidth={2.5} />
           </TouchableOpacity>
           <Text style={styles.headerTitle} numberOfLines={2}>
@@ -67,58 +65,46 @@ const WorkoutDetailScreen = ({ route, navigation }) => {
         <View style={styles.heroRow}>
           {/* Type */}
           <View style={styles.heroCard}>
-            <View
-              style={[styles.heroAccentBar, { backgroundColor: typeStyle }]}
-            />
+            <View style={[styles.heroAccentBar, { backgroundColor: typeStyle }]}/>
             <View style={styles.heroCardInner}>
               <Text style={styles.heroCardTitle}>Type</Text>
-              <View style={styles.heroCardRow}>
-                <View style={styles.heroCardTag}>
+                <View>
                   <Text style={styles.heroCardText}>{exercise.type}</Text>
                 </View>
-              </View>
             </View>
           </View>
 
           {/* Difficulty */}
           <View style={styles.heroCard}>
-            <View
-              style={[
-                styles.heroAccentBar,
-                { backgroundColor: difficultyColor },
-              ]}
-            />
+            <View style={[ styles.heroAccentBar,{ backgroundColor: difficultyColor },]}/>
             <View style={styles.heroCardInner}>
               <Text style={styles.heroCardTitle}>Difficulty</Text>
-              <View style={styles.heroCardRow}>
-                <View style={styles.heroCardTag}>
+                <View>
                   <Text style={styles.heroCardText}>{exercise.difficulty}</Text>
                 </View>
-              </View>
             </View>
           </View>
 
           {/* Muscle */}
           <View style={styles.heroCard}>
-            <View
-              style={[styles.heroAccentBar, { backgroundColor: '#cb06c1ff' }]}
-            />
+            <View style={[styles.heroAccentBar, { backgroundColor: '#cb06c1ff' }]}/>
             <View style={styles.heroCardInner}>
               <Text style={styles.heroCardTitle}>Muscle</Text>
-              <View style={styles.heroCardRow}>
-                <View style={styles.heroCardTag}>
+                <View>
                   <Text style={styles.heroCardText}>{exercise.muscle}</Text>
                 </View>
-              </View>
             </View>
           </View>
         </View>
 
+        {/* Image */}
+        <View>
+          {/* <Image source={muscles.image} /> */}
+        </View>
+
         {/* Equipment */}
         <View style={styles.section}>
-          <View
-            style={[styles.accentBar, { backgroundColor: difficultyColor }]}
-          />
+          <View style={[styles.accentBar, { backgroundColor: difficultyColor }]}/>
           <View style={styles.sectionInner}>
             <Text style={styles.sectionTitle}>Equipments</Text>
             <View style={styles.equipRow}>

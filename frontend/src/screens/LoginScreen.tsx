@@ -12,35 +12,26 @@ import {
   Image,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useAuth } from '../context/AuthContext';
 import { Eye, EyeOff } from 'lucide-react-native';
 
+import { useDispatch, useSelector } from 'react-redux';
+import { loginRequest, authFailure } from '../store/slices/authSlice';
+import { RootState } from '../store/Store';
+
 const LoginScreen = ({ navigation }: any) => {
-  const { login } = useAuth();
+  const { loading, error } = useSelector((state: RootState) => state.auth);
+  const dispatch = useDispatch();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleLogin = async () => {
+  const handleLogin = () => {
     if (!email || !password) {
-      setError('Please fill in all fields.');
+      dispatch(authFailure('Please fill in all fields.'));
       return;
     }
-    try {
-      setLoading(true);
-      setError('');
-      await login(email.trim().toLowerCase(), password);
-    } catch (err: any) {
-      setError(
-        err?.response?.data?.message ||
-          err.message ||
-          'Login failed. Try again.',
-      );
-    } finally {
-      setLoading(false);
-    }
+    const f_email = email.trim().toLowerCase();
+    dispatch(loginRequest({ email: f_email, password }));
   };
 
   return (

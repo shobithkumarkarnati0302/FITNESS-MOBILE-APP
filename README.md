@@ -14,7 +14,6 @@ FITNESS_APP/
 
 ---
 
-
 ## Setup Instructions
 
 ### Prerequisites
@@ -56,7 +55,6 @@ Start the development server:
 npm run dev
 ```
 
-
 ---
 
 ### 3. Frontend Setup
@@ -73,23 +71,19 @@ API_NINJAS_KEY=your_api_ninjas_key
 BASE_URL=http://10.0.2.2:5000
 ```
 
-In One Terminal run the following command to start Metro bundler: 
-
+In One Terminal run the following command to start Metro bundler:
 
 ```bash
 npm start
 ```
 
-
-> Note: Make Sure Android Emulator is running before running the following command to start the app on Android emulator: 
-
+> Note: Make Sure Android Emulator is running before running the following command to start the app on Android emulator:
 
 In a separate terminal, run the following command to start the app on Android emulator:
 
 ```bash
 npx react-native run-android
 ```
-
 
 ### Instructions to configure API Key
 
@@ -99,8 +93,8 @@ npx react-native run-android
 4. Create a .env file in the frontend directory
 5. Add the following line: API_NINJAS_KEY=your_api_ninjas_key
 
-
 ### App Screenshots
+
 <div>
   
 <img height="500" alt="Login_Screen_1" src="https://i.ibb.co/DPvxhm7N/Login-Screen-1.jpg">
@@ -116,9 +110,3 @@ npx react-native run-android
 <img height="500" alt="Edit_Profile_Screen" src="https://i.ibb.co/pvLrV2xs/Edit-Profile-Screen.jpg">
 
 </div>
-
-
-
-
-
-

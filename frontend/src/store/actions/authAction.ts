@@ -5,9 +5,9 @@ export const loginRequest = (data: any) => ({
   payload: data,
 });
 
-export const registerRequest = (userData: any) => ({
+export const registerRequest = (data: any) => ({
   type: "auth/REGISTER_REQUEST",
-  payload: userData,
+  payload: data,
 });
 
 export const logoutRequest = () => ({

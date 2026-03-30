@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Zap } from 'lucide-react-native';
+
 import { useSelector } from 'react-redux';
-import { RootState } from '../store/Store';
+import { selectUser } from '../store/selectors/authSelector';
 
 const plans_data = {
   Free: { days: 30 },
@@ -11,7 +12,8 @@ const plans_data = {
 };
 
 const SubscriptionBar = ({ plan }: { plan: string }) => {
-  const user = useSelector((state: RootState) => state.auth.user);
+
+  const user = useSelector(selectUser);
 
   if (!user) return null;
 

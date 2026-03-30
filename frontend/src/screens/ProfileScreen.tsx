@@ -6,15 +6,16 @@ import {
   ScrollView,
 } from 'react-native';
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../store/Store';
-import { logoutRequest } from '../store/slices/authSlice';
+import SubscriptionBar from '../components/SubscriptionBar';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Weight, Calendar, Ruler } from 'lucide-react-native';
-import SubscriptionBar from '../components/SubscriptionBar';
+
+import { useDispatch, useSelector } from 'react-redux';
+import { logoutRequest } from '../store/actions/authAction';
+import { selectUser } from '../store/selectors/authSelector';
 
 const ProfileScreen = ({ navigation }: any) => {
-  const user = useSelector((state: RootState) => state.auth.user);
+  const user = useSelector(selectUser);
   const dispatch = useDispatch();
 
   const initials = user?.name

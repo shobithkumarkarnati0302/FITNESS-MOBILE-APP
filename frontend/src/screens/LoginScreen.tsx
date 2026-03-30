@@ -15,11 +15,13 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Eye, EyeOff } from 'lucide-react-native';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { loginRequest, authFailure } from '../store/slices/authSlice';
-import { RootState } from '../store/Store';
+import { loginRequest, authFailure } from '../store/actions/authAction';
+import { selectAuthLoading, selectAuthError } from '../store/selectors/authSelector';
 
 const LoginScreen = ({ navigation }: any) => {
-  const { loading, error } = useSelector((state: RootState) => state.auth);
+  const loading = useSelector(selectAuthLoading);
+  const error = useSelector(selectAuthError);
+  
   const dispatch = useDispatch();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');

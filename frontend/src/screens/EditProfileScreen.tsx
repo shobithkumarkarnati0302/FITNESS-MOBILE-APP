@@ -11,16 +11,20 @@ import {
 } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../store/Store';
-import { updateProfileRequest, authFailure } from '../store/slices/authSlice';
 import { ChevronLeft, Lock } from 'lucide-react-native';
+
+import { useDispatch, useSelector } from 'react-redux';
+import { updateProfileRequest, authFailure } from '../store/actions/authAction';
+import {selectUser,selectAuthLoading, selectAuthError } from '../store/selectors/authSelector';
 
 const GENDERS = ['male', 'female', 'other'];
 const PLANS = ['Free', 'Pro', 'Elite'];
 
 const EditProfileScreen = ({ navigation }: any) => {
-  const { user, loading, error } = useSelector((state: RootState) => state.auth);
+
+  const user = useSelector(selectUser);
+  const loading = useSelector(selectAuthLoading);
+  const error = useSelector(selectAuthError);
   const dispatch = useDispatch();
 
   const [name, setName] = useState(user?.name ?? '');

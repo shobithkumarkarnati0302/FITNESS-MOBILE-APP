@@ -1,13 +1,15 @@
 import React, { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from '../store/Store';
-import { loadTokenRequest } from '../store/slices/authSlice';
 import AuthNavigator from './AuthNavigator';
 import AppNavigator from './AppNavigator';
 import { ActivityIndicator, View } from 'react-native';
 
+import { useSelector, useDispatch } from 'react-redux';
+import { loadTokenRequest }         from '../store/actions/authAction';
+import {selectToken, selectAuthLoading} from '../store/selectors/authSelector';
+
 export default function RootNavigator() {
-  const { token, loading } = useSelector((state: RootState) => state.auth);
+  const token = useSelector(selectToken);
+  const loading = useSelector(selectAuthLoading);
   const dispatch = useDispatch();
 
   useEffect(() => {

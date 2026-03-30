@@ -1,10 +1,9 @@
-import { StyleSheet,Text,View,ScrollView,TouchableOpacity, Image} from 'react-native';
+import { StyleSheet,Text,View,ScrollView,TouchableOpacity} from 'react-native';
 import React from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ChevronLeft } from 'lucide-react-native';
-import muscles_groups from '../constants/muscles';
 
-const DIFFICULTY_COLORS = (difficulty)=>{
+const DIFFICULTY_COLORS = (difficulty: string) => {
   switch(difficulty){
     case 'beginner':
       return '#22C55E';
@@ -17,7 +16,7 @@ const DIFFICULTY_COLORS = (difficulty)=>{
   }
 }
 
-const TYPE_COLORS = (exer_type)=>{
+const TYPE_COLORS = (exer_type: string) => {
   switch(exer_type){
     case 'strength':
       return '#2563EB';

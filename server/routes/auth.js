@@ -47,7 +47,8 @@ router.post("/register", async (req, res) => {
         weight,
         age,
         gender,
-        plan
+        plan: user.plan,
+        subscriptionStartDate: user.subscriptionStartDate,
       },
     });
   } catch (error) {

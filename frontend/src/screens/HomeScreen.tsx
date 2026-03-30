@@ -8,11 +8,12 @@ import {
 } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useSelector } from 'react-redux';
-import { RootState } from '../store/Store';
 import muscles_groups from '../constants/muscles';
 import MuscleCard from '../components/MuscleCard';
 import { X, Search } from 'lucide-react-native';
+
+import { useSelector } from 'react-redux';
+import {selectUser} from '../store/selectors/authSelector';
 
 const getGreeting = () => {
   const hour = new Date().getHours();
@@ -22,7 +23,7 @@ const getGreeting = () => {
 };
 
 const HomeScreen = ({ navigation }: any) => {
-  const user = useSelector((state: RootState) => state.auth.user);
+  const user = useSelector(selectUser);
   const firstName = user?.name?.split(' ')[0] ?? 'Athlete';
 
   const [search, setSearch] = useState('');

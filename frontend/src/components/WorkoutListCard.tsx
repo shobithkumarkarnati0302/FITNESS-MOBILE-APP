@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { ChevronRight } from 'lucide-react-native';
 
 const DIFFICULTY_COLORS = {
@@ -18,7 +18,6 @@ const TYPE_COLORS = {
 };
 
 const WorkoutListCard = ({ exercise, navigation }) => {
-  
   const difficultyColor = DIFFICULTY_COLORS[exercise.difficulty] ?? '#EF4444';
 
   const typeStyle = TYPE_COLORS[exercise.type?.toLowerCase()] ?? {
@@ -26,14 +25,15 @@ const WorkoutListCard = ({ exercise, navigation }) => {
     text: '#6B7280',
   };
 
-  const mockquipments = ['dumbell', 'barbell', 'bench', 'kettlebell', 'cable', 'machine', 'bands']; 
-  
-  const finalequip = mockquipments.concat(exercise.equipments);
+  // const mockquipments = ['dumbell', 'barbell', 'bench', 'kettlebell', 'cable', 'machine', 'bands'];
+
+  // const finalequip = mockquipments.concat(exercise.equipments);
 
   return (
-
-    <TouchableOpacity activeOpacity={0.85} style={styles.card}
-    onPress={() => navigation.navigate('WorkoutDetail', { exercise })}
+    <TouchableOpacity
+      activeOpacity={0.85}
+      style={styles.card}
+      onPress={() => navigation.navigate('WorkoutDetail', { exercise })}
     >
       <View style={[styles.accent, { backgroundColor: difficultyColor }]} />
 
@@ -56,18 +56,18 @@ const WorkoutListCard = ({ exercise, navigation }) => {
           {exercise.equipments.length > 0 ? (
             <>
               <Text style={styles.equipTextHeading}>Equipments Required:</Text>
-              {finalequip.map((eq, i) => (
+              {exercise.equipments.map((eq, i) => (
                 <View key={i} style={styles.equipTag}>
                   <Text style={styles.equipText}>{eq}</Text>
                 </View>
               ))}
             </>
-          ) : 
-          <>
-          <Text style={styles.equipTextHeading}>Equipments Required:</Text>
-            <Text> - - - - </Text>
-          </>
-          }
+          ) : (
+            <>
+              <Text style={styles.equipTextHeading}>Equipments Required:</Text>
+              <Text> - - - - </Text>
+            </>
+          )}
         </View>
       </View>
 

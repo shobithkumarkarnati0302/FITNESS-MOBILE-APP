@@ -1,10 +1,16 @@
-import { StyleSheet,Text,View,ScrollView,TouchableOpacity} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  TouchableOpacity,
+} from 'react-native';
 import React from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ChevronLeft } from 'lucide-react-native';
 
 const DIFFICULTY_COLORS = (difficulty: string) => {
-  switch(difficulty){
+  switch (difficulty) {
     case 'beginner':
       return '#22C55E';
     case 'intermediate':
@@ -14,10 +20,10 @@ const DIFFICULTY_COLORS = (difficulty: string) => {
     default:
       return '#F3F4F6';
   }
-}
+};
 
 const TYPE_COLORS = (exer_type: string) => {
-  switch(exer_type){
+  switch (exer_type) {
     case 'strength':
       return '#2563EB';
     case 'cardio':
@@ -33,77 +39,88 @@ const TYPE_COLORS = (exer_type: string) => {
     default:
       return '#F3F4F6';
   }
-}
+};
 
 const WorkoutDetailScreen = ({ route, navigation }) => {
   const { exercise } = route.params;
 
-  const difficultyColor = DIFFICULTY_COLORS(exercise.difficulty)
-  const typeStyle       = TYPE_COLORS(exercise.type?.toLowerCase());
+  const difficultyColor = DIFFICULTY_COLORS(exercise.difficulty);
+  const typeStyle = TYPE_COLORS(exercise.type?.toLowerCase());
 
   // const muscles = muscles_groups[exercise.muscle];
 
-  
   // console.log(exercise.muscle)
 
   return (
     <SafeAreaView style={styles.safe}>
-      {/* <ImageBackground source={img.image} style={styles.image} resizeMode="cover"> */}
-      <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
-        {/* Header */}
-        <View style={styles.header}>
-          <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
-            <ChevronLeft size={20} color="#111827" strokeWidth={2.5} />
-          </TouchableOpacity>
-          <Text style={styles.headerTitle} numberOfLines={2}>
-            {exercise.name}
-          </Text>
-        </View>
+      
+      {/* Header */}
+      <View style={styles.header}>
+        <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
+          <ChevronLeft size = {20} color = "#111827" strokeWidth = {2.5} />
+        </TouchableOpacity>
+        <Text style={styles.headerTitle} numberOfLines={2}>
+          {exercise.name}
+        </Text>
+      </View>
 
+      <ScrollView
+        contentContainerStyle={styles.scroll}
+        showsVerticalScrollIndicator={false}
+      >
         {/* Hero row */}
         <View style={styles.heroRow}>
           {/* Type */}
           <View style={styles.heroCard}>
-            <View style={[styles.heroAccentBar, { backgroundColor: typeStyle }]}/>
+            <View
+              style={[styles.heroAccentBar, { backgroundColor: typeStyle }]}
+            />
             <View style={styles.heroCardInner}>
               <Text style={styles.heroCardTitle}>Type</Text>
-                <View>
-                  <Text style={styles.heroCardText}>{exercise.type}</Text>
-                </View>
+              <View>
+                <Text style={styles.heroCardText}>{exercise.type}</Text>
+              </View>
             </View>
           </View>
 
           {/* Difficulty */}
           <View style={styles.heroCard}>
-            <View style={[ styles.heroAccentBar,{ backgroundColor: difficultyColor },]}/>
+            <View
+              style={[
+                styles.heroAccentBar,
+                { backgroundColor: difficultyColor },
+              ]}
+            />
             <View style={styles.heroCardInner}>
               <Text style={styles.heroCardTitle}>Difficulty</Text>
-                <View>
-                  <Text style={styles.heroCardText}>{exercise.difficulty}</Text>
-                </View>
+              <View>
+                <Text style={styles.heroCardText}>{exercise.difficulty}</Text>
+              </View>
             </View>
           </View>
 
           {/* Muscle */}
           <View style={styles.heroCard}>
-            <View style={[styles.heroAccentBar, { backgroundColor: '#cb06c1ff' }]}/>
+            <View
+              style={[styles.heroAccentBar, { backgroundColor: '#cb06c1ff' }]}
+            />
             <View style={styles.heroCardInner}>
               <Text style={styles.heroCardTitle}>Muscle</Text>
-                <View>
-                  <Text style={styles.heroCardText}>{exercise.muscle}</Text>
-                </View>
+              <View>
+                <Text style={styles.heroCardText}>{exercise.muscle}</Text>
+              </View>
             </View>
           </View>
         </View>
 
         {/* Image */}
-        <View>
-          {/* <Image source={muscles.image} /> */}
-        </View>
+        <View>{/* <Image source={muscles.image} /> */}</View>
 
         {/* Equipment */}
         <View style={styles.section}>
-          <View style={[styles.accentBar, { backgroundColor: difficultyColor }]}/>
+          <View
+            style={[styles.accentBar, { backgroundColor: difficultyColor }]}
+          />
           <View style={styles.sectionInner}>
             <Text style={styles.sectionTitle}>Equipments</Text>
             <View style={styles.equipRow}>
@@ -124,7 +141,9 @@ const WorkoutDetailScreen = ({ route, navigation }) => {
 
         {/* Instructions */}
         <View style={styles.section}>
-          <View style={[styles.accentBar, { backgroundColor: difficultyColor }]}/>
+          <View
+            style={[styles.accentBar, { backgroundColor: difficultyColor }]}
+          />
           <View style={styles.sectionInner}>
             <Text style={styles.sectionTitle}>Instructions</Text>
             {exercise.instructions ? (

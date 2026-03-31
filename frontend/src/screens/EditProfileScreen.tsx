@@ -8,20 +8,25 @@ import {
   ActivityIndicator,
   KeyboardAvoidingView,
   Platform,
+  ToastAndroid,
 } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ChevronLeft, Lock } from 'lucide-react-native';
+// import Toast from 'react-native-toast-message';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { updateProfileRequest, authFailure } from '../store/actions/authAction';
-import {selectUser,selectAuthLoading, selectAuthError } from '../store/selectors/authSelector';
+import {
+  selectUser,
+  selectAuthLoading,
+  selectAuthError,
+} from '../store/selectors/authSelector';
 
 const GENDERS = ['male', 'female', 'other'];
 const PLANS = ['Free', 'Pro', 'Elite'];
 
 const EditProfileScreen = ({ navigation }: any) => {
-
   const user = useSelector(selectUser);
   const loading = useSelector(selectAuthLoading);
   const error = useSelector(selectAuthError);
@@ -34,6 +39,8 @@ const EditProfileScreen = ({ navigation }: any) => {
   const [gender, setGender] = useState(user?.gender ?? '');
   const [plan, setPlan] = useState(user?.plan ?? 'Free');
 
+  const [submitted, setSubmitted] = useState(false);
+
   useEffect(() => {
     if (user) {
       setName(user.name ?? '');
@@ -45,11 +52,23 @@ const EditProfileScreen = ({ navigation }: any) => {
     }
   }, [user]);
 
+  // Handle navigation after save finishes
+  useEffect(() => {
+    if (submitted && !loading) {
+      if (!error) {
+        navigation.goBack();
+        ToastAndroid.showWithGravity('Your profile has been Updated Successfully.', ToastAndroid.SHORT, ToastAndroid.TOP);
+      }
+      setSubmitted(false);
+    }
+  }, [loading, error, submitted, navigation]);
+
   const handleSave = () => {
     if (!name.trim()) {
       dispatch(authFailure('Name cannot be empty.'));
       return;
     }
+    setSubmitted(true);
     dispatch(
       updateProfileRequest({
         name: name.trim(),
@@ -61,7 +80,13 @@ const EditProfileScreen = ({ navigation }: any) => {
         plan: plan || undefined,
       }),
     );
-    navigation.goBack();
+    // Toast.show({
+    //   type: 'success',
+    //   text1: 'This is an info message',
+    //   position: 'top',
+    //   visibilityTime: 3000,
+    //   autoHide: true
+    // });
   };
 
   return (

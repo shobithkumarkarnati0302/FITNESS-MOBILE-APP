@@ -1,27 +1,32 @@
 import React, { useEffect } from 'react';
+import RNBootSplash from 'react-native-bootsplash';
 import AuthNavigator from './AuthNavigator';
 import AppNavigator from './AppNavigator';
-import { ActivityIndicator, View } from 'react-native';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { loadTokenRequest }         from '../store/actions/authAction';
-import {selectToken, selectAuthLoading} from '../store/selectors/authSelector';
+import { loadTokenRequest } from '../store/actions/authAction';
+import {
+  selectToken,
+  selectIsInitializing,
+} from '../store/selectors/authSelector';
 
 export default function RootNavigator() {
-  const token = useSelector(selectToken);
-  const loading = useSelector(selectAuthLoading);
-  const dispatch = useDispatch();
+  const token          = useSelector(selectToken);
+  const isInitializing = useSelector(selectIsInitializing);
+  const dispatch       = useDispatch();
 
   useEffect(() => {
     dispatch(loadTokenRequest());
   }, [dispatch]);
 
-  if (loading) {
-    return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <ActivityIndicator size="large" />
-      </View>
-    );
+  useEffect(() => {
+    if (!isInitializing) {
+      RNBootSplash.hide({ fade: true });
+    }
+  }, [isInitializing]);
+
+  if (isInitializing) {
+    return null;
   }
 
   return token ? <AppNavigator /> : <AuthNavigator />;

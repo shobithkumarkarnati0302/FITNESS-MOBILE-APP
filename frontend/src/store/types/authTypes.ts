@@ -19,5 +19,5 @@ export interface userState {
   token: string | null;
   loading: boolean;
   error: string | null;
+  isInitializing: boolean;
 }
-

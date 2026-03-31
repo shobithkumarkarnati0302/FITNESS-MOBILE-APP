@@ -18,6 +18,7 @@ const TYPE_COLORS = {
 };
 
 const WorkoutListCard = ({ exercise, navigation }) => {
+  
   const difficultyColor = DIFFICULTY_COLORS[exercise.difficulty] ?? '#EF4444';
 
   const typeStyle = TYPE_COLORS[exercise.type?.toLowerCase()] ?? {

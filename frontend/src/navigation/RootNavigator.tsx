@@ -17,6 +17,7 @@ export default function RootNavigator() {
 
   useEffect(() => {
     dispatch(loadTokenRequest());
+    
   }, [dispatch]);
 
   useEffect(() => {

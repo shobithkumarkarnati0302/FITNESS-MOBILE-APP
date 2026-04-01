@@ -4,7 +4,8 @@ import cors from "cors";
 import connectDB from "./db.js";
 import authRoutes from "./routes/auth.js";
 import profileRoutes from "./routes/Profile.js";
-
+import favoriteRoutes from "./routes/favorite.js";
+  
 connectDB();
 
 const app = express();
@@ -16,6 +17,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use("/auth", authRoutes);
 app.use("/api", profileRoutes);
+app.use("/api", favoriteRoutes);
 
 app.get("/", (req, res) => {
   res.send("API Running");
@@ -23,6 +25,5 @@ app.get("/", (req, res) => {
 
 app.listen(PORT, () => {
   console.log("Server is Running on port ", PORT);
+  console.log("Mongo URI: ", process.env.MONGO_URI);
 });
-
-

@@ -15,6 +15,7 @@ const UserSchema = new mongoose.Schema({
   age: Number,
   gender: String,
   plan: { type: String, default: "Free" },
+  favorites: { type: Array,default: []},
   subscriptionStartDate: { type: Date, default: Date.now },
   createdAt: {
     type: Date,

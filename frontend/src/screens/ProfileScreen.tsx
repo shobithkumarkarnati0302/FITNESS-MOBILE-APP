@@ -8,7 +8,7 @@ import {
 import React from 'react';
 import SubscriptionBar from '../components/SubscriptionBar';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Weight, Calendar, Ruler } from 'lucide-react-native';
+import { Weight, Calendar, Ruler, Heart } from 'lucide-react-native';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { logoutRequest } from '../store/actions/authAction';
@@ -138,6 +138,18 @@ const ProfileScreen = ({ navigation }: any) => {
         {/* Extras */}
         <View style={styles.extraContainer}>
           <Text style={styles.extraHeading}>Extras</Text>
+
+          {/* Favorites */}
+          <TouchableOpacity
+            style={[styles.favBtn, { marginBottom: 10 }]}
+            onPress={() => navigation.navigate('Favorites')}
+            activeOpacity={0.8}
+          >
+            <Text style={[styles.favText, { color: '#EF4444', marginLeft: 8 }]}>
+              My Favorites
+            </Text>
+          </TouchableOpacity>
+
           {/* Camera Screen */}
           <TouchableOpacity
             style={styles.extraBtn}
@@ -330,7 +342,20 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     marginLeft: 4,
   },
-
+  favBtn:{
+    backgroundColor: '#FEF2F2',
+    borderWidth: 2,
+    borderColor: '#F87171',
+    borderRadius: 16,
+    paddingVertical: 16,
+    alignItems: 'center',
+  },
+  favText:{
+    color: '#DC2626',
+    fontSize: 14,
+    fontWeight: '800',
+    letterSpacing: 1,
+  },
   extraBtn: {
     backgroundColor: '#FFF7ED',
     borderWidth: 2,

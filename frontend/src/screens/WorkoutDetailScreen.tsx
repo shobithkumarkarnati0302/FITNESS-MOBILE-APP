@@ -1,13 +1,10 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  ScrollView,
-  TouchableOpacity,
-} from 'react-native';
+import { StyleSheet,Text,View,ScrollView,TouchableOpacity} from 'react-native';
 import React from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { ChevronLeft } from 'lucide-react-native';
+import { ChevronLeft, Heart } from 'lucide-react-native';
+import { useDispatch, useSelector } from 'react-redux';
+import { toggleFavoriteRequest } from '../store/actions/favAction';
+import { selectFavorites } from '../store/selectors/favSelector';
 
 const DIFFICULTY_COLORS = (difficulty: string) => {
   switch (difficulty) {
@@ -41,27 +38,47 @@ const TYPE_COLORS = (exer_type: string) => {
   }
 };
 
-const WorkoutDetailScreen = ({ route, navigation }) => {
+const WorkoutDetailScreen = ({ route, navigation }: any) => {
   const { exercise } = route.params;
 
   const difficultyColor = DIFFICULTY_COLORS(exercise.difficulty);
   const typeStyle = TYPE_COLORS(exercise.type?.toLowerCase());
 
-  // const muscles = muscles_groups[exercise.muscle];
+  const dispatch = useDispatch();
+  const favorites = useSelector(selectFavorites);
+  const isFavorited = favorites?.some((fav: any) => fav.name === exercise.name);
 
-  // console.log(exercise.muscle)
+  const handleFavorite = () => {
+    dispatch(toggleFavoriteRequest(exercise));
+  };
 
   return (
     <SafeAreaView style={styles.safe}>
-      
       {/* Header */}
-      <View style={styles.header}>
-        <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
-          <ChevronLeft size = {20} color = "#111827" strokeWidth = {2.5} />
+      <View style = {styles.header}>
+        <TouchableOpacity
+          style={styles.backBtn}
+          onPress={() => navigation.goBack()}
+        >
+          <ChevronLeft size={20} color="#111827" strokeWidth={2.5} />
         </TouchableOpacity>
         <Text style={styles.headerTitle} numberOfLines={2}>
           {exercise.name}
         </Text>
+        <View style={styles.favBox}>
+          <TouchableOpacity
+            style={styles.favBtn}
+            onPress={handleFavorite}
+            activeOpacity={0.7}
+          >
+            <Heart
+              size={22}
+              color="#EF4444"
+              fill={isFavorited ? '#EF4444' : 'transparent'}
+            />
+          </TouchableOpacity>
+          <Text style={styles.favText}>{isFavorited ? 'Marked as Favorite!' : 'Mark as Favorite'}</Text>
+        </View>
       </View>
 
       <ScrollView
@@ -323,5 +340,18 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#374151',
     lineHeight: 22,
+  },
+  favBox: {
+    flexDirection: 'column',
+    alignItems: 'flex-end',
+    gap: 4,
+  },
+  favBtn: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 12,
+    width: 32,
+  },
+  favText: {
+    fontSize: 10,
   },
 });

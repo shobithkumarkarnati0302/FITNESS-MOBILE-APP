@@ -25,10 +25,10 @@ router.post("/register", async (req, res) => {
       name,
       email,
       password: hashedPassword,
-      height,
-      weight,
-      age,
-      gender,
+      height: height ? Number(height) : undefined,
+      weight: weight ? Number(weight) : undefined,
+      age: age ? Number(age) : undefined,
+      gender: gender || undefined,
     });
     await user.save();
 
@@ -48,6 +48,7 @@ router.post("/register", async (req, res) => {
         age,
         gender,
         plan: user.plan,
+        favorites: user.favorites,
         subscriptionStartDate: user.subscriptionStartDate,
       },
     });
@@ -96,6 +97,7 @@ router.post("/login", async (req, res) => {
         age: existingUser.age,
         gender: existingUser.gender,
         plan: existingUser.plan,
+        favorites: existingUser.favorites,
         subscriptionStartDate: existingUser.subscriptionStartDate,
       },
     });

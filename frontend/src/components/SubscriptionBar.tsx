@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Zap } from 'lucide-react-native';
 
 import { useSelector } from 'react-redux';
-import { selectUser } from '../store/selectors/authSelector';
+import { selectUser } from '../store/auth/authSelector';
 
 const plans_data = {
   Free: { days: 30 },

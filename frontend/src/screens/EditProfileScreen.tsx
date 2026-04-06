@@ -16,12 +16,12 @@ import { ChevronLeft, Lock } from 'lucide-react-native';
 // import Toast from 'react-native-toast-message';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { updateProfileRequest, authFailure } from '../store/actions/authAction';
+import { updateProfileRequest, authFailure } from '../store/auth/authAction';
 import {
   selectUser,
   selectAuthLoading,
   selectAuthError,
-} from '../store/selectors/authSelector';
+} from '../store/auth/authSelector';
 
 const GENDERS = ['male', 'female', 'other'];
 const PLANS = ['Free', 'Pro', 'Elite'];

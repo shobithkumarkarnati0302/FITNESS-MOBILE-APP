@@ -11,8 +11,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Weight, Calendar, Ruler, Heart } from 'lucide-react-native';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { logoutRequest } from '../store/actions/authAction';
-import { selectUser } from '../store/selectors/authSelector';
+import { logoutRequest } from '../store/auth/authAction';
+import { selectUser } from '../store/auth/authSelector';
 
 const ProfileScreen = ({ navigation }: any) => {
   const user = useSelector(selectUser);

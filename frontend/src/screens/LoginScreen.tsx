@@ -15,8 +15,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Eye, EyeOff } from 'lucide-react-native';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { loginRequest, authFailure } from '../store/actions/authAction';
-import { selectAuthLoading, selectAuthError } from '../store/selectors/authSelector';
+import { loginRequest, authFailure } from '../store/auth/authAction';
+import { selectAuthLoading, selectAuthError } from '../store/auth/authSelector';
 
 const LoginScreen = ({ navigation }: any) => {
   const loading = useSelector(selectAuthLoading);

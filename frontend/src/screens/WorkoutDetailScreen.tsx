@@ -3,8 +3,8 @@ import React from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ChevronLeft, Heart } from 'lucide-react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { toggleFavoriteRequest } from '../store/actions/favAction';
-import { selectFavorites } from '../store/selectors/favSelector';
+import { toggleFavoriteRequest } from '../store/favorite/favAction';
+import { selectFavorites } from '../store/favorite/favSelector';
 
 const DIFFICULTY_COLORS = (difficulty: string) => {
   switch (difficulty) {

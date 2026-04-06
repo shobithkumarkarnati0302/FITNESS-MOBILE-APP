@@ -8,31 +8,26 @@ import {
 import React, { useState, useEffect } from 'react';
 import Loading from '../components/Loading';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import getExercisesByMuscle from '../api/apiNinja';
 import Error from '../components/Error';
 import WorkoutListCard from '../components/WorkoutListCard';
 import { ChevronLeft } from 'lucide-react-native';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchWorkoutsRequest } from '../store/workoutApi/workoutAction';
+import { RootState } from '../store/store';
 
 const WorkoutListScreen = ({ route, navigation }: any) => {
   const muscleGroup = route?.params?.muscleGroup || 'abdominals';
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [exercises, setExercises] = useState([]);
+  const dispatch = useDispatch();
 
-  const fetchExercises = async () => {
-    try {
-      const res = await getExercisesByMuscle(muscleGroup);
-      setExercises(res);
-    } catch (error) {
-      setError(error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const {
+    workouts: exercises,
+    loading,
+    error,
+  } = useSelector((state: RootState) => state.workout);
 
   useEffect(() => {
-    fetchExercises();
-  }, []);
+    dispatch(fetchWorkoutsRequest(muscleGroup));
+  }, [dispatch, muscleGroup]);
 
   if (loading) return <Loading message="Loading exercises..." />;
   if (error) return <Error message={error} navigation={navigation} />;

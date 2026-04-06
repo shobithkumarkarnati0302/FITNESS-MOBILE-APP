@@ -4,11 +4,11 @@ import AuthNavigator from './AuthNavigator';
 import AppNavigator from './AppNavigator';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { loadTokenRequest } from '../store/actions/authAction';
+import { loadTokenRequest } from '../store/auth/authAction';
 import {
   selectToken,
   selectIsInitializing,
-} from '../store/selectors/authSelector';
+} from '../store/auth/authSelector';
 
 export default function RootNavigator() {
   const token          = useSelector(selectToken);

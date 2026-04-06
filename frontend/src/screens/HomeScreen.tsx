@@ -6,7 +6,7 @@ import MuscleCard from '../components/MuscleCard';
 import { X, Search } from 'lucide-react-native';
 
 import { useSelector } from 'react-redux';
-import { selectUser } from '../store/selectors/authSelector';
+import { selectUser } from '../store/auth/authSelector';
 
 const getGreeting = () => {
   const hour = new Date().getHours();

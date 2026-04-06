@@ -9,7 +9,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ChevronLeft, Heart } from 'lucide-react-native';
 import { useSelector } from 'react-redux';
-import { selectFavorites } from '../store/selectors/favSelector';
+import { selectFavorites } from '../store/favorite/favSelector';
 import WorkoutListCard from '../components/WorkoutListCard';
 
 const FavoritesScreen = ({ navigation }: any) => {

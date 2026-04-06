@@ -16,8 +16,8 @@ import { Dropdown } from 'react-native-element-dropdown';
 import { Eye, EyeOff } from 'lucide-react-native';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { registerRequest, authFailure } from '../store/actions/authAction';
-import { selectAuthLoading, selectAuthError } from '../store/selectors/authSelector';
+import { registerRequest, authFailure } from '../store/auth/authAction';
+import { selectAuthLoading, selectAuthError } from '../store/auth/authSelector';
 
 const RegisterScreen = ({ navigation }: any) => {
   const loading = useSelector(selectAuthLoading);
